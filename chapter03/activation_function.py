@@ -14,6 +14,14 @@ def identity_function(x):
     return x
 
 
+def softmax_function(x):
+    max_x = np.max(x)
+    exp_x = np.exp(x - max_x)
+    sum_exp_x = np.sum(exp_x)
+    y = exp_x / sum_exp_x
+    return y
+
+
 def run():
     x1 = np.array([-1.0, 1.0, 2.0])
     print("x1: " + x1.__str__())

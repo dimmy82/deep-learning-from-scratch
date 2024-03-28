@@ -1,23 +1,30 @@
 import numpy as np
 
-from differentiation import function_2
+from no2_differentiation import function_2
 
 
 def numberical_gradient(func, x):
     h = 1e-4
     grad = np.zeros_like(x)
 
-    for index in range(x.size):
+    it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
+    while not it.finished:
+        index = it.multi_index
         org_val = x[index]
 
+        # 「x + h」で上書き
         x[index] = org_val + h
+        # f(x + h)の計算
         f_x_plus_h = func(x)
 
+        # 「x - h」で上書き
         x[index] = org_val - h
+        # f(x - h)の計算
         f_x_minus_h = func(x)
 
         grad[index] = (f_x_plus_h - f_x_minus_h) / (2 * h)
         x[index] = org_val
+        it.iternext()
 
     return grad
 
